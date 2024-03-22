@@ -25,10 +25,12 @@ public class ProdutosDAO {
             prep.setString(1, produto.getNome());
             prep.setFloat(2, produto.getValor());
             prep.setString(3, produto.getStatus());
-            
-            prep.executeUpdate();
-        } catch (SQLException e) {
 
+            prep.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "cadastro realizado com sucesso");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "erro no cadastro do produto");
             e.printStackTrace();
         }
 
