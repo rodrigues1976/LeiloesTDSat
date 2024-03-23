@@ -53,12 +53,12 @@ public class ProdutosDAO {
 
         return listagem;
     }
-
+    
     public void venderProduto(Integer id){
-
+        
         try (Connection conn = new conectaDAO().connectDB(); PreparedStatement prep = conn.prepareStatement("UPDATE produtos set status = 'Vendido' where id = ?")) {
             prep.setInt(1, id);
-            
+
             prep.executeUpdate();
 
             JOptionPane.showMessageDialog(null, "Produto atuializado com sucesso");
@@ -67,8 +67,8 @@ public class ProdutosDAO {
             e.printStackTrace();
         }
     }
-
-    public ArrayList<ProdutosDTO> listarProdutosendidos() {
+    
+    public ArrayList<ProdutosDTO> listarProdutosVendidos() {
         ArrayList<ProdutosDTO> listagem = new ArrayList<>();
         try (Connection conn = new conectaDAO().connectDB(); Statement stm = conn.createStatement(); ResultSet resultset = stm.executeQuery("select * from produtos where status = 'Vendido'")) {
             while (resultset.next()) {
