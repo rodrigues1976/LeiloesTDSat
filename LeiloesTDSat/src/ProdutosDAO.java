@@ -17,9 +17,6 @@ import java.util.ArrayList;
 
 public class ProdutosDAO {
 
-    
-    
-
     public void cadastrarProduto(ProdutosDTO produto) {
 
         try (Connection conn = new conectaDAO().connectDB(); PreparedStatement prep = conn.prepareStatement("INSERT INTO produtos ( nome, valor, status) VALUES ( ?, ?, ?) ")) {
@@ -39,7 +36,7 @@ public class ProdutosDAO {
 
     public ArrayList<ProdutosDTO> listarProdutos() {
         ArrayList<ProdutosDTO> listagem = new ArrayList<>();
-        try (Connection conn = new conectaDAO().connectDB(); Statement stm = conn.createStatement(); ResultSet resultset = stm.executeQuery("")) {
+        try (Connection conn = new conectaDAO().connectDB(); Statement stm = conn.createStatement(); ResultSet resultset = stm.executeQuery("select * from produtos")) {
             while (resultset.next()) {
                 ProdutosDTO produto = new ProdutosDTO();
                 produto.setId(resultset.getInt("id"));
@@ -55,7 +52,20 @@ public class ProdutosDAO {
         }
 
         return listagem;
+    }
 
+    public void venderProduto(Integer id){
+
+        try (Connection conn = new conectaDAO().connectDB(); PreparedStatement prep = conn.prepareStatement("UPDATE produtos set status = 'Vendido' where id = ?")) {
+            prep.setInt(1, id);
+
+            prep.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Produto atuializado com sucesso");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro na atualização do status do produto");
+            e.printStackTrace();
+        }
     }
 
 }
