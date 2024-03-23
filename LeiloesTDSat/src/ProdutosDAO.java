@@ -58,7 +58,7 @@ public class ProdutosDAO {
 
         try (Connection conn = new conectaDAO().connectDB(); PreparedStatement prep = conn.prepareStatement("UPDATE produtos set status = 'Vendido' where id = ?")) {
             prep.setInt(1, id);
-
+            
             prep.executeUpdate();
 
             JOptionPane.showMessageDialog(null, "Produto atuializado com sucesso");
@@ -66,6 +66,26 @@ public class ProdutosDAO {
             JOptionPane.showMessageDialog(null, "Erro na atualização do status do produto");
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<ProdutosDTO> listarProdutosendidos() {
+        ArrayList<ProdutosDTO> listagem = new ArrayList<>();
+        try (Connection conn = new conectaDAO().connectDB(); Statement stm = conn.createStatement(); ResultSet resultset = stm.executeQuery("select * from produtos where status = 'Vendido'")) {
+            while (resultset.next()) {
+                ProdutosDTO produto = new ProdutosDTO();
+                produto.setId(resultset.getInt("id"));
+                produto.setNome(resultset.getString("nome"));
+                produto.setValor(resultset.getInt("valor"));
+                produto.setStatus(resultset.getString("status"));
+                listagem.add(produto);
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+        return listagem;
     }
 
 }
